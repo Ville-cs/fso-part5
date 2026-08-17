@@ -79,6 +79,7 @@ test("Renders url and likes after opening", async () => {
   expect(likesElement).toBeDefined()
 })
 
+// eslint-disable-next-line
 test('Clicking "like" button twice calls event handler twice', async () => {
   const user = {
     id: 123,
