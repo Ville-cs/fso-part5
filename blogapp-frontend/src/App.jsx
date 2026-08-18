@@ -122,7 +122,7 @@ const App = () => {
             <Link style={padding} to="/new">
               add blog
             </Link>
-            <Link style={padding} to="/logout">
+            <Link style={padding} to="/" onClick={handleLogout}>
               logout
             </Link>
           </span>
@@ -158,7 +158,6 @@ const App = () => {
           path="/new"
           element={<BlogForm handleBlogPost={handleBlogPost} />}
         />
-        <Route path="/logout" element={<Logout handleClick={handleLogout} />} />
         <Route
           path="/login"
           element={
