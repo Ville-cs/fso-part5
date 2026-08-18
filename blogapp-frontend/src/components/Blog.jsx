@@ -25,7 +25,7 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
 
   if (!seeDetails) {
     return (
-      <div className="blog">
+      <div className="blog" data-testid="allblogs">
         {blog.title} by {blog.author}
         <button className="detailsStyle" onClick={handleClick}>
           show details
@@ -35,7 +35,7 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
   }
 
   return (
-    <div className="blogStyle">
+    <div className="blogStyle" data-testid="allblogs">
       <div>
         {blog.title}
         <button className="detailsStyle" onClick={handleClick}>
@@ -44,7 +44,7 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
       </div>
       <div> Read the article here {blog.url}</div>
       <div>
-        Likes {blog.likes}
+        Likes <span data-testid="likes">{blog.likes}</span>
         <button className="likeStyle" onClick={handleLike}>
           like
         </button>

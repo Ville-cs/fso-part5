@@ -32,37 +32,43 @@ const BlogForm = ({ handleBlogPost }) => {
   return (
     <form id="testForm" onSubmit={handleSubmit}>
       <div>
-        title:
-        <input
-          type="text"
-          value={title}
-          name="title"
-          onChange={handleTitleChange}
-          placeholder="title of the blog"
-          id="title"
-        />
+        <label>
+          title:
+          <input
+            type="text"
+            value={title}
+            name="title"
+            onChange={handleTitleChange}
+            placeholder="title of the blog"
+            id="title"
+          />
+        </label>
       </div>
       <div>
-        author:
-        <input
-          type="text"
-          value={author}
-          name="author"
-          onChange={handleAuthorChange}
-          placeholder="author of the blog"
-          id="author"
-        />
+        <label>
+          author:
+          <input
+            type="text"
+            value={author}
+            name="author"
+            onChange={handleAuthorChange}
+            placeholder="author of the blog"
+            id="author"
+          />
+        </label>
       </div>
       <div>
-        url:
-        <input
-          type="text"
-          value={url}
-          name="url"
-          onChange={handleUrlChange}
-          placeholder="URL of the blog"
-          id="url"
-        />
+        <label>
+          url:
+          <input
+            type="text"
+            value={url}
+            name="url"
+            onChange={handleUrlChange}
+            placeholder="URL of the blog"
+            id="url"
+          />
+        </label>
       </div>
       <button className="postBlog" type="submit">
         Post
