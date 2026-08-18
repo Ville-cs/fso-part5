@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import BlogForm from "./BlogForm"
+import { MemoryRouter } from "react-router-dom"
+
+const renderWithRouter = (component) => {
+  return render(<MemoryRouter>{component}</MemoryRouter>)
+}
 
 test("BlogForm calls event handler with the right props", async () => {
   const handleBlogPost = vi.fn()
 
-  render(<BlogForm handleBlogPost={handleBlogPost} />)
+  renderWithRouter(<BlogForm handleBlogPost={handleBlogPost} />)
 
   const blogTitle = screen.getByPlaceholderText("title of the blog")
   const blogAuthor = screen.getByPlaceholderText("author of the blog")

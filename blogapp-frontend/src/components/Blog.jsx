@@ -32,7 +32,7 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
     return (
       <div className="blog" data-testid="allblogs">
         <h2>{blog.title}</h2>
-        by {blog.author}
+        <div>{blog.author}</div>
         <button className="detailsStyle" onClick={handleClick}>
           show details
         </button>

@@ -1,22 +1,29 @@
 import { render, screen } from "@testing-library/react"
 import Blog from "./Blog"
 import userEvent from "@testing-library/user-event"
+import { MemoryRouter } from "react-router-dom"
+
+const renderWithRouter = (component) => {
+  return render(<MemoryRouter>{component}</MemoryRouter>)
+}
 
 test("Renders only title and author", () => {
   const blog = {
-    title: "title",
-    author: "author",
+    title: "cool title",
+    author: "cool author",
     url: "url",
     likes: 1,
   }
 
-  render(<Blog blog={blog} />)
+  renderWithRouter(<Blog blog={blog} />)
 
-  const element = screen.getByText("title by author")
-  const element2 = screen.queryByText("url")
+  const title = screen.getByText("cool title")
+  const author = screen.getByText("cool author")
+  const url = screen.queryByText("url")
 
-  expect(element).toBeDefined()
-  expect(element2).toBeNull()
+  expect(title).toBeDefined()
+  expect(author).toBeDefined()
+  expect(url).toBeNull()
 
   // Alternative approach
   // const { container } = render(<Blog blog={blog} />)
@@ -41,7 +48,7 @@ test("Event handler is called only once with a button press", async () => {
   }
 
   const fn = vi.fn()
-  render(<Blog blog={blog} handleClick={fn} user={user} />)
+  renderWithRouter(<Blog blog={blog} handleClick={fn} user={user} />)
 
   const blogUser = userEvent.setup()
   const button = screen.getByText("show details")
@@ -66,7 +73,7 @@ test("Renders url and likes after opening", async () => {
   }
 
   const fn = vi.fn()
-  render(<Blog blog={blog} handleClick={fn} user={user} />)
+  renderWithRouter(<Blog blog={blog} handleClick={fn} user={user} />)
 
   const blogUser = userEvent.setup()
   const button = screen.getByText("show details")
@@ -98,7 +105,9 @@ test('Clicking "like" button twice calls event handler twice', async () => {
   const addLike = (a, b) => {}
 
   const fn = vi.fn()
-  render(<Blog blog={blog} handleLike={fn} addLike={addLike} user={user} />)
+  renderWithRouter(
+    <Blog blog={blog} handleLike={fn} addLike={addLike} user={user} />,
+  )
 
   const blogUser = userEvent.setup()
   const showButton = screen.getByText("show details", { exact: false })
