@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { Routes, Route, Link, useNavigate, useMatch } from "react-router-dom"
 import BlogList from "./components/BlogList"
 import Blog from "./components/Blog"
@@ -18,8 +18,6 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState("")
   const [renderBlog, setRenderBlog] = useState(false)
   const navigate = useNavigate()
-
-  const blogFormRef = useRef()
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem("loggedBlogappUser")
@@ -75,7 +73,6 @@ const App = () => {
       const postedBlog = await blogService.create(object)
       setBlogs(blogs.concat(postedBlog))
       setRenderBlog(!renderBlog)
-      blogFormRef.current.toggleVisibility()
       setMessage("Blog submitted!")
       setTimeout(() => {
         setMessage(null)
@@ -143,12 +140,6 @@ const App = () => {
               blogs={blogs}
               errorMessage={errorMessage}
               message={message}
-              user={user}
-              handleLogout={handleLogout}
-              blogFormRef={blogFormRef}
-              handleBlogPost={handleBlogPost}
-              deleteBlog={deleteBlog}
-              addLike={addLike}
             />
           }
         />
