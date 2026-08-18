@@ -1,13 +1,7 @@
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
 const Blog = ({ blog, addLike, user, deleteBlog }) => {
-  const [seeDetails, setSeeDetails] = useState(false)
   const navigate = useNavigate()
-
-  const handleClick = () => {
-    setSeeDetails(!seeDetails)
-  }
 
   const handleLike = () => {
     const blogObject = {
@@ -28,26 +22,10 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
 
   if (!blog) return
 
-  if (!seeDetails) {
-    return (
-      <div className="blog" data-testid="allblogs">
-        <h2>{blog.title}</h2>
-        <div>{blog.author}</div>
-        <button className="detailsStyle" onClick={handleClick}>
-          show details
-        </button>
-      </div>
-    )
-  }
-
   return (
     <div className="blogStyle" data-testid="allblogs">
       <div>
         <h2>{blog.title}</h2>
-
-        <button className="detailsStyle" onClick={handleClick}>
-          hide
-        </button>
       </div>
       <div> Read the article here {blog.url}</div>
       <div>
@@ -58,7 +36,7 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
           </button>
         )}
       </div>
-      <div> By {blog.author}</div>
+      <div>{blog.author}</div>
       {user && user.id === blog.user.id ? (
         <button className="removeStyle" onClick={handleRemove}>
           remove
