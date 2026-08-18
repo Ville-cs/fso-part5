@@ -1,7 +1,6 @@
-const UserInfo = ({ userDetails, handleClick }) => {
+const Logout = ({ handleClick }) => {
   return (
     <div>
-      {`${userDetails.username} logged in`}
       <button onClick={handleClick} type="button">
         logout
       </button>
@@ -9,4 +8,4 @@ const UserInfo = ({ userDetails, handleClick }) => {
   )
 }
 
-export default UserInfo
+export default Logout

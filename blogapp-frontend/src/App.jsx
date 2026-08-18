@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from "react"
+import { Routes, Route, Link, useNavigate, useMatch } from "react-router-dom"
+import BlogList from "./components/BlogList"
 import Blog from "./components/Blog"
+import BlogForm from "./components/BlogForm"
+import Login from "./components/Login"
+import Logout from "./components/Logout"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
-import UserInfo from "./components/UserInfo"
-import BlogForm from "./components/BlogForm"
-import Notification from "./components/Notification"
-import Togglable from "./components/Togglable"
-import LoginForm from "./components/LoginForm"
 import "./styles.css"
 
 const App = () => {
@@ -17,6 +17,7 @@ const App = () => {
   const [message, setMessage] = useState("")
   const [errorMessage, setErrorMessage] = useState("")
   const [renderBlog, setRenderBlog] = useState(false)
+  const navigate = useNavigate()
 
   const blogFormRef = useRef()
 
@@ -49,6 +50,7 @@ const App = () => {
       setUser(user)
       setUsername("")
       setPassword("")
+      navigate("/")
       setMessage("Login successful")
       setTimeout(() => {
         setMessage(null)
@@ -65,6 +67,7 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem("loggedBlogappUser")
     setUser(null)
+    navigate("/")
   }
 
   const handleBlogPost = async (object) => {
@@ -104,43 +107,82 @@ const App = () => {
     }, 5000)
   }
 
-  if (!user) {
-    return (
-      <div>
-        <h2>Login to see blogs</h2>
-        <Notification errorMessage={errorMessage} message={message} />
-        <Togglable buttonLabel="Log in here">
-          <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-          />
-        </Togglable>
-      </div>
-    )
+  const match = useMatch("/:id")
+  const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
+
+  const padding = {
+    padding: 5,
   }
 
   return (
     <div>
-      <h2>Blogs</h2>
-      <Notification errorMessage={errorMessage} message={message} />
-      <UserInfo userDetails={user} handleClick={handleLogout} />
-
-      <h2>Create a new blog</h2>
-      <Togglable buttonLabel="Post a new blog here!" ref={blogFormRef}>
-        <BlogForm handleBlogPost={handleBlogPost} />
-      </Togglable>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          user={user}
-          deleteBlog={deleteBlog}
-          addLike={addLike}
+      <div>
+        <Link style={padding} to="/">
+          blogs
+        </Link>
+        {user ? (
+          <span>
+            <Link style={padding} to="/new">
+              add blog
+            </Link>
+            <Link style={padding} to="/logout">
+              logout
+            </Link>
+          </span>
+        ) : (
+          <Link style={padding} to="/login">
+            login
+          </Link>
+        )}
+      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <BlogList
+              blogs={blogs}
+              errorMessage={errorMessage}
+              message={message}
+              user={user}
+              handleLogout={handleLogout}
+              blogFormRef={blogFormRef}
+              handleBlogPost={handleBlogPost}
+              deleteBlog={deleteBlog}
+              addLike={addLike}
+            />
+          }
         />
-      ))}
+        <Route
+          path="/:id"
+          element={
+            <Blog
+              blog={blog}
+              user={user}
+              deleteBlog={deleteBlog}
+              addLike={addLike}
+            />
+          }
+        />
+        <Route
+          path="/new"
+          element={<BlogForm handleBlogPost={handleBlogPost} />}
+        />
+        <Route path="/logout" element={<Logout handleClick={handleLogout} />} />
+        <Route
+          path="/login"
+          element={
+            <Login
+              errorMessage={errorMessage}
+              message={message}
+              handleLogin={handleLogin}
+              username={username}
+              password={password}
+              setUsername={setUsername}
+              setPassword={setPassword}
+            />
+          }
+        />
+      </Routes>
     </div>
   )
 }
