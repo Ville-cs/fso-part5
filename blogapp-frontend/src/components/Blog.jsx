@@ -1,4 +1,11 @@
 import { useNavigate } from "react-router-dom"
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  Typography,
+  Button,
+} from "@mui/material"
 
 const Blog = ({ blog, addLike, user, deleteBlog }) => {
   const navigate = useNavigate()
@@ -23,25 +30,47 @@ const Blog = ({ blog, addLike, user, deleteBlog }) => {
   if (!blog) return
 
   return (
-    <div className="blogStyle" data-testid="allblogs">
-      <div>
-        <h2>{blog.title}</h2>
-      </div>
-      <div> Read the article here {blog.url}</div>
-      <div>
-        Likes <span data-testid="likes">{blog.likes}</span>
-        {user && (
-          <button className="likeStyle" onClick={handleLike}>
-            like
-          </button>
-        )}
-      </div>
-      <div>{blog.author}</div>
-      {user && user.id === blog.user.id ? (
-        <button className="removeStyle" onClick={handleRemove}>
-          remove
-        </button>
-      ) : null}
+    <div data-testid="allblogs">
+      <Card variant="outlined" sx={{ marginTop: "3em" }}>
+        <CardHeader
+          title={blog.title}
+          sx={{
+            "& .MuiCardHeader-title": {
+              fontWeight: "bold",
+              fontSize: "2rem",
+            },
+          }}
+        />
+        <CardContent>
+          <Typography sx={{ marginTop: "1em", fontSize: "25px" }}>
+            by {blog.author}
+          </Typography>
+
+          <Typography sx={{ marginTop: "1em", fontSize: "20px" }}>
+            <a href={blog.url}>{blog.url}</a>
+          </Typography>
+          <div>
+            <Typography sx={{ marginTop: "1em", fontSize: "22px" }}>
+              Likes <span data-testid="likes">{blog.likes}</span>
+            </Typography>
+            {user && (
+              <Button variant="contained" color="success" onClick={handleLike}>
+                like
+              </Button>
+            )}
+          </div>
+          {user && user.id === blog.user.id ? (
+            <Button
+              variant="contained"
+              color="error"
+              sx={{ marginTop: "1em" }}
+              onClick={handleRemove}
+            >
+              remove
+            </Button>
+          ) : null}
+        </CardContent>
+      </Card>
     </div>
   )
 }

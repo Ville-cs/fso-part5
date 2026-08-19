@@ -1,5 +1,6 @@
 import Notification from "./Notification"
 import { Link } from "react-router-dom"
+import { Card } from "@mui/material"
 
 const BlogList = ({ blogs, notification }) => {
   return (
@@ -7,11 +8,11 @@ const BlogList = ({ blogs, notification }) => {
       <h2>Blogs</h2>
       <Notification notification={notification} />
       {blogs.map((blog) => (
-        <div key={blog.id}>
+        <Card key={blog.id} sx={{ marginTop: "2em" }}>
           <Link to={`/${blog.id}`}>
             {blog.title} by {blog.author}
           </Link>
-        </div>
+        </Card>
       ))}
     </div>
   )
