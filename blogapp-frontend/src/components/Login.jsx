@@ -2,8 +2,7 @@ import LoginForm from "./LoginForm"
 import Notification from "./Notification"
 
 const Login = ({
-  errorMessage,
-  message,
+  notification,
   handleLogin,
   username,
   password,
@@ -13,7 +12,7 @@ const Login = ({
   return (
     <div>
       <h2>Login to see blogs</h2>
-      <Notification errorMessage={errorMessage} message={message} />
+      <Notification notification={notification} />
       <LoginForm
         handleLogin={handleLogin}
         username={username}

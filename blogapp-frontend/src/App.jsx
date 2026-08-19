@@ -7,15 +7,16 @@ import Login from "./components/Login"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
 // import "./styles.css"
-import { Container } from "@mui/material"
+import { Container, AppBar, Toolbar, Button, Typography } from "@mui/material"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState("")
-  const [errorMessage, setErrorMessage] = useState("")
+  const [notification, setNotification] = useState(null)
+  // const [message, setMessage] = useState("")
+  // const [errorMessage, setErrorMessage] = useState("")
   const [renderBlog, setRenderBlog] = useState(false)
   const navigate = useNavigate()
 
@@ -49,15 +50,15 @@ const App = () => {
       setUsername("")
       setPassword("")
       navigate("/")
-      setMessage("Login successful")
+      setNotification({ message: "Login successful", type: "success" })
       setTimeout(() => {
-        setMessage(null)
+        setNotification(null)
       }, 5000)
     } catch (error) {
       console.log(error.message)
-      setErrorMessage("Username or password wrong")
+      setNotification({ message: "Username or password wrong", type: "error" })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 5000)
     }
   }
@@ -73,15 +74,15 @@ const App = () => {
       const postedBlog = await blogService.create(object)
       setBlogs(blogs.concat(postedBlog))
       setRenderBlog(!renderBlog)
-      setMessage("Blog submitted!")
+      setNotification({ message: "Blog submitted", type: "success" })
       setTimeout(() => {
-        setMessage(null)
+        setNotification(null)
       }, 5000)
     } catch (error) {
       console.log(error.message)
-      setErrorMessage("Some fields missing")
+      setNotification({ message: "Some fields missing", type: "error" })
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 5000)
     }
   }
@@ -89,59 +90,71 @@ const App = () => {
   const deleteBlog = async (blog) => {
     await blogService.remove(blog.id)
     setRenderBlog(!renderBlog)
-    setMessage("Blog deleted!")
+    setNotification({ message: "Blog deleted!", type: "success" })
     setTimeout(() => {
-      setMessage(null)
+      setNotification(null)
     }, 5000)
   }
 
   const addLike = async (blog, blogObject) => {
     await blogService.update(blog.id, blogObject)
     setRenderBlog(!renderBlog)
-    setMessage("Liked blog!")
+    setNotification({ message: "Liked blog", type: "success" })
     setTimeout(() => {
-      setMessage(null)
+      setNotification(null)
     }, 5000)
   }
 
   const match = useMatch("/:id")
   const blog = match ? blogs.find((blog) => blog.id === match.params.id) : null
 
-  const padding = {
-    padding: 5,
-  }
+  const style = { "&:hover": { bgcolor: "rgba(255,255,255,0.3)" } }
 
   return (
     <Container>
-      <div>
-        <Link style={padding} to="/">
-          blogs
-        </Link>
-        {user ? (
-          <span>
-            <Link style={padding} to="/new">
-              add blog
-            </Link>
-            <Link style={padding} to="/" onClick={handleLogout}>
-              logout
-            </Link>
-          </span>
-        ) : (
-          <Link style={padding} to="/login">
-            login
-          </Link>
-        )}
-      </div>
+      <AppBar position="static">
+        <Container
+          sx={{
+            "& > *": {
+              paddingLeft: "7em",
+              paddingRight: "7em",
+            },
+          }}
+        >
+          <Toolbar>
+            <Typography variant="h4" sx={{ flexGrow: 1 }}>
+              Blog App
+            </Typography>
+            <Button color="inherit" component={Link} to="/" sx={style}>
+              blogs
+            </Button>
+            {user ? (
+              <span>
+                <Button color="inherit" component={Link} to="/new" sx={style}>
+                  add blog
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/"
+                  onClick={handleLogout}
+                  sx={style}
+                >
+                  logout
+                </Button>
+              </span>
+            ) : (
+              <Button color="inherit" component={Link} to="/login" sx={style}>
+                login
+              </Button>
+            )}
+          </Toolbar>
+        </Container>
+      </AppBar>
       <Routes>
         <Route
           path="/"
-          element={
-            <BlogList
-              blogs={blogs}
-              errorMessage={errorMessage}
-              message={message}
-            />
-          }
+          element={<BlogList blogs={blogs} notification={notification} />}
         />
         <Route
           path="/:id"
@@ -162,8 +175,7 @@ const App = () => {
           path="/login"
           element={
             <Login
-              errorMessage={errorMessage}
-              message={message}
+              notification={notification}
               handleLogin={handleLogin}
               username={username}
               password={password}

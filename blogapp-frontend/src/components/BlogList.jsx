@@ -1,11 +1,11 @@
 import Notification from "./Notification"
 import { Link } from "react-router-dom"
 
-const BlogList = ({ blogs, errorMessage, message }) => {
+const BlogList = ({ blogs, notification }) => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification errorMessage={errorMessage} message={message} />
+      <Notification notification={notification} />
       {blogs.map((blog) => (
         <div key={blog.id}>
           <Link to={`/${blog.id}`}>

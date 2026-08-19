@@ -1,11 +1,15 @@
-const Notification = ({ errorMessage, message }) => {
-  if (errorMessage) {
-    return <div className="errorStyle">{errorMessage}</div>
-  } else if (message) {
-    return <div className="messageStyle">{message}</div>
-  }
+import { Alert } from "@mui/material"
 
-  return null
+const Notification = ({ notification }) => {
+  if (!notification) return null
+  return (
+    <Alert
+      style={{ marginTop: 10, marginBottom: 10 }}
+      severity={notification.type}
+    >
+      {notification.message}
+    </Alert>
+  )
 }
 
 export default Notification
