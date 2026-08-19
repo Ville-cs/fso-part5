@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { TextField, Button, Typography } from "@mui/material"
 
 const BlogForm = ({ handleBlogPost }) => {
   const [title, setTitle] = useState("")
@@ -32,51 +33,49 @@ const BlogForm = ({ handleBlogPost }) => {
     navigate("/")
   }
 
+  const styles = {
+    textFieldMargin: {
+      marginBottom: 25,
+    },
+  }
+
   return (
     <form id="testForm" onSubmit={handleSubmit}>
-      <div>
-        <h2>create new</h2>
-        <label>
-          title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={handleTitleChange}
-            placeholder="title of the blog"
-            id="title"
-          />
-        </label>
+      <Typography variant="h4" sx={{ margin: "1em 0em" }}>
+        create new
+      </Typography>
+      <div style={styles.textFieldMargin}>
+        <TextField
+          label="title"
+          value={title}
+          onChange={handleTitleChange}
+          variant="standard"
+        />
       </div>
-      <div>
-        <label>
-          author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={handleAuthorChange}
-            placeholder="author of the blog"
-            id="author"
-          />
-        </label>
+      <div style={styles.textFieldMargin}>
+        <TextField
+          label="author"
+          value={author}
+          onChange={handleAuthorChange}
+          variant="standard"
+        />
       </div>
-      <div>
-        <label>
-          url:
-          <input
-            type="text"
-            value={url}
-            name="url"
-            onChange={handleUrlChange}
-            placeholder="URL of the blog"
-            id="url"
-          />
-        </label>
+      <div style={styles.textFieldMargin}>
+        <TextField
+          label="url"
+          value={url}
+          onChange={handleUrlChange}
+          variant="standard"
+        />
       </div>
-      <button className="postBlog" type="submit">
+      <Button
+        type="submit"
+        variant="contained"
+        color="success"
+        sx={{ margin: "1em 2em" }}
+      >
         Post
-      </button>
+      </Button>
     </form>
   )
 }

@@ -4,10 +4,10 @@ import BlogList from "./components/BlogList"
 import Blog from "./components/Blog"
 import BlogForm from "./components/BlogForm"
 import Login from "./components/Login"
-import Logout from "./components/Logout"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
-import "./styles.css"
+// import "./styles.css"
+import { Container } from "@mui/material"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -112,7 +112,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <Container>
       <div>
         <Link style={padding} to="/">
           blogs
@@ -173,7 +173,7 @@ const App = () => {
           }
         />
       </Routes>
-    </div>
+    </Container>
   )
 }
 
